@@ -3,27 +3,28 @@ import { useState } from "react"
 function DirectorForm() {
   const [name, setName] = useState("")
   const [bio, setBio] = useState("")
+  const navigate = useNavigate()
+  const { directors, setDirectors } = useOutletContext()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const newDirector = { name, bio, movies: [] }
+
     fetch("http://localhost:4000/directors", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newDirector)
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newDirector)
     })
-    .then(r => {
-        if (!r.ok) { throw new Error("failed to add director")}
+      .then(r => {
+        if (!r.ok) { throw new Error("failed to add director") }
         return r.json()
-    })
-    .then(data => {
+      })
+      .then((data) => {
+        setDirectors(directors.push(data))
+        navigate(`/directors/${data.id}`)     // redirect to new director page
         console.log(data)
-        // handle context/state changes
-        // navigate to newly created director page
-    })
-    .catch(console.log)
+      })
+      .catch(console.log)
   }
 
   return (
