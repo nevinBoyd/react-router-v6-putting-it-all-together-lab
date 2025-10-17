@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Outlet } from "react-router-dom"
 import NavBar from '../components/NavBar';
 
 const DirectorContainer = () => {
@@ -6,12 +7,12 @@ const DirectorContainer = () => {
 
     useEffect(() => {
         fetch("http://localhost:4000/directors")
-        .then(r => {
-            if (!r.ok) { throw new Error("failed to fetch directors") }
-            return r.json()
-        })
-        .then(setDirectors)
-        .catch(console.log)
+            .then(r => {
+                if (!r.ok) throw new Error("failed to fetch directors")
+                return r.json()
+            })
+            .then(setDirectors)
+            .catch(console.log)
     }, [])
 
     return (
@@ -19,10 +20,11 @@ const DirectorContainer = () => {
             <NavBar />
             <main>
                 <h1>Welcome to the Director's Directory!</h1>
-                {/* all director components should render here depending on route */}
+                {/* outlet renders child route */}
+                <Outlet context={{ directors, setDirectors }} />
             </main>
         </>
-    );
+    )
 }
 
-export default DirectorContainer;
+export default DirectorContainer
