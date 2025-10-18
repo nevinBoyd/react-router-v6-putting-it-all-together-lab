@@ -38,7 +38,7 @@ function MovieForm() {
           d.id === updatedDirector.id ? updatedDirector : d
         )
         setDirectors(updatedList)        // handle context/state changes
-        navigate(`movies/${newMovie}`)   // navigate to newly created movie page     
+        navigate(`/directors/${id}/movie/${newMovie.id}`)   // navigate to newly created movie page     
       })
       .catch(console.log)
   }
