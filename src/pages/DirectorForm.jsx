@@ -1,51 +1,55 @@
 import { useState } from "react"
+import { useNavigate, useOutletContext } from "react-router-dom"
 
 function DirectorForm() {
   const [name, setName] = useState("")
   const [bio, setBio] = useState("")
+  const navigate = useNavigate()
+  const { directors, setDirectors } = useOutletContext()
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault()
-    const newDirector = { name, bio, movies: [] }
-    fetch("http://localhost:4000/directors", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newDirector)
-    })
-    .then(r => {
-        if (!r.ok) { throw new Error("failed to add director")}
-        return r.json()
-    })
-    .then(data => {
-        console.log(data)
-        // handle context/state changes
-        // navigate to newly created director page
-    })
-    .catch(console.log)
+
+    const newDirector = {
+      id: directors.length + 1,
+      name,
+      bio,
+      movies: [],
+    }
+
+    // add to list and reset form
+    setDirectors([...directors, newDirector])
+    setName("")
+    setBio("")
+
+    // navigate back to directors list
+    navigate("/directors")
   }
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <h2>Add New Director</h2>
-      <form onSubmit={handleSubmit}>
+
+      <label>
+        Name:
         <input
-          type="text"
-          placeholder="Director's Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
+          placeholder="Director Name"
         />
+      </label>
+
+      <label>
+        Bio:
         <textarea
-          placeholder="Director's Bio"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
-          required
+          placeholder="Director Bio"
         />
-        <button type="submit">Add Director</button>
-      </form>
-    </div>
+      </label>
+
+      <button type="submit">Add Director</button>
+    </form>
   )
 }
 
