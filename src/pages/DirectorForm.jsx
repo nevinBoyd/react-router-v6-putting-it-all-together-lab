@@ -20,7 +20,7 @@ function DirectorForm() {
         return r.json()
       })
       .then((data) => {
-        setDirectors(directors.push(data))
+        setDirectors([...directors, data])
         navigate(`/directors/${data.id}`)     // redirect to new director page
         console.log(data)
       })
