@@ -1,8 +1,9 @@
 import { Link, useOutletContext } from "react-router-dom"
 
 const DirectorList = () => {
-    // Replace me
     const { directors } = useOutletContext()
+
+    // Show loading state until data is fetched
     if (!directors || directors.length === 0) {
         return <p>Loading directors...</p>
     }
