@@ -11,8 +11,8 @@ const DirectorContainer = () => {
                 if (!r.ok) throw new Error("failed to fetch directors")
                 return r.json()
             })
-            .then(setDirectors)
-            .catch(console.log)
+            .then((data) => setDirectors(data))
+            .catch((err) => console.error("Error loading directiors:", err))
     }, [])
 
     return (
